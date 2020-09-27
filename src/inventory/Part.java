@@ -1,5 +1,5 @@
-/**
- * Supplied class Part.java
+package inventory; /**
+ * Supplied class inventory.Part.java
  */
 
 /**
