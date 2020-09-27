@@ -1,4 +1,4 @@
-package sample;
+package inventory;
 
 public class Controller {
 }
