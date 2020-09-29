@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1000.0"
-            xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="inventory.MainController" fx:id="mainPanel">
+<BorderPane fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="inventory.Controller">
     <top>
         <Label text="Inventory System" BorderPane.alignment="CENTER">
             <font>
@@ -40,7 +39,7 @@
                             <TextField alignment="BOTTOM_RIGHT" />
                             </children>
                         </HBox>
-                        <TableView prefHeight="250.0" prefWidth="350.0" fx:id="partTable">
+                        <TableView fx:id="partTable" prefHeight="250.0" prefWidth="350.0">
                             <columnResizePolicy>
                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                             </columnResizePolicy>
@@ -144,6 +143,6 @@
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
    <bottom>
-      <Button mnemonicParsing="false" text="Exit" BorderPane.alignment="CENTER_RIGHT" />
+      <Button fx:id="exit" mnemonicParsing="false" onAction="#handleExit" text="Exit" BorderPane.alignment="CENTER_RIGHT" />
    </bottom>
 </BorderPane>

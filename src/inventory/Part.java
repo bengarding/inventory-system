@@ -3,7 +3,6 @@ package inventory; /**
  */
 
 /**
- *
  * @author Ben Garding
  */
 public abstract class Part {
@@ -22,7 +21,6 @@ public abstract class Part {
         this.stock = stock;
         this.min = min;
         this.max = max;
-
     }
 
     /**

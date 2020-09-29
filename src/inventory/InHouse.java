@@ -11,8 +11,10 @@ public class InHouse extends Part {
     private SimpleStringProperty partPrice;
     private SimpleStringProperty partStock;
 
-    public InHouse(int id, String name, double price, int stock, int min, int max) {
+    public InHouse(int id, String name, double price, int stock, int min, int max, int machineId) {
         super(id, name, price, stock, min, max);
+        this.machineId = machineId;
+
         this.partID = new SimpleStringProperty(Integer.toString(id));
         this.partName = new SimpleStringProperty(name);
         this.partPrice = new SimpleStringProperty(Double.toString(price));

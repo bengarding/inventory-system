@@ -19,7 +19,7 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        InHouse dummy = new InHouse(2, "test", 1, 251, 1, 1);
+        InHouse dummy = new InHouse(2, "test", 1.25, 251, 1, 10, 5);
         Inventory.addPart(dummy);
         launch(args);
     }
