@@ -56,13 +56,12 @@ public class PartDialog {
     @FXML
     public void initialize() {
 
-        if(!Inventory.getAllParts().isEmpty()) {
+        if (!Inventory.getAllParts().isEmpty()) {
             int newId = Inventory.getAllParts().get(Inventory.getAllParts().size() - 1).getId();
             newId++;
-            String newIdString = String.format("%0" + 4 + "d", newId);
-            idField.setText(newIdString);
+            idField.setText(String.valueOf(newId));
         } else {
-            idField.setText("0001");
+            idField.setText("1");
         }
 
         nameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -176,7 +175,7 @@ public class PartDialog {
 
     @FXML
     public void handleOkButton() {
-        if(!validateAll()) {
+        if (!validateAll()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Invalid Part");
             alert.setHeaderText(null);
@@ -192,7 +191,18 @@ public class PartDialog {
         int min = Integer.parseInt(minField.getText());
         int max = Integer.parseInt(maxField.getText());
 
-        if (inHouse.isSelected()) {
+        if (Inventory.partExists(id)) {
+            int index = Inventory.lookupPartIndex(id);
+            if (inHouse.isSelected()) {
+                int machineId = Integer.parseInt(machineIdField.getText());
+                InHouse newInHouse = new InHouse(id, name, price, stock, min, max, machineId);
+                Inventory.updatePart(index, newInHouse);
+            } else {
+                String company = companyField.getText();
+                Outsourced newOutsourced = new Outsourced(id, name, price, stock, min, max, company);
+                Inventory.updatePart(index, newOutsourced);
+            }
+        } else if (inHouse.isSelected()) {
             int machineId = Integer.parseInt(machineIdField.getText());
             InHouse newInHouse = new InHouse(id, name, price, stock, min, max, machineId);
             Inventory.addPart(newInHouse);
@@ -212,15 +222,25 @@ public class PartDialog {
         stage.close();
     }
 
-    @FXML
-    public Part getNewPart() {
-        int id = Integer.parseInt(idField.getText());
-        String name = nameField.getText();
-        int stock = Integer.parseInt(stockField.getText());
-        float price = Float.parseFloat(priceField.getText());
-        int min = Integer.parseInt(minField.getText());
-        int max = Integer.parseInt(maxField.getText());
-        return null;
+    public void modifyPart(Part part) {
+        idField.setText(String.valueOf(part.getId()));
+        nameField.setText(part.getName());
+        priceField.setText(String.valueOf(part.getPrice()));
+        minField.setText(String.valueOf(part.getMin()));
+        maxField.setText(String.valueOf(part.getMax()));
+        stockField.setText(String.valueOf(part.getStock()));
+
+        if (part.getClass() == InHouse.class) {
+            machineIdField.setText(String.valueOf(((InHouse) part).getMachineId()));
+        } else {
+            machineIdField.setVisible(false);
+            machineIdLabel.setVisible(false);
+            companyField.setVisible(true);
+            companyLabel.setVisible(true);
+            outsourced.setSelected(true);
+            companyField.setText(((Outsourced) part).getCompanyName());
+        }
+
     }
 
     @FXML

@@ -53,6 +53,22 @@ public class Outsourced extends Part {
         return partStock;
     }
 
+    public void setPartID(String partID) {
+        this.partID.set(partID);
+    }
+
+    public void setPartName(String partName) {
+        this.partName.set(partName);
+    }
+
+    public void setPartPrice(String partPrice) {
+        this.partPrice.set(partPrice);
+    }
+
+    public void setPartStock(String partStock) {
+        this.partStock.set(partStock);
+    }
+
     public String getCompanyName() {
         return companyName;
     }

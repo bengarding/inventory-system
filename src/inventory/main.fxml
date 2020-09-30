@@ -68,8 +68,8 @@
                         </TableView>
                   <HBox alignment="TOP_RIGHT" prefHeight="25.0" prefWidth="460.0" spacing="10.0">
                      <children>
-                        <Button fx:id="addPart" mnemonicParsing="false" onAction="#handleAddClick" text="Add" />
-                        <Button mnemonicParsing="false" text="Modify" />
+                        <Button fx:id="addPart" mnemonicParsing="false" onAction="#handlePartAddClick" text="Add" />
+                        <Button mnemonicParsing="false" onAction="#handlePartModifyClick" text="Modify" />
                         <Button mnemonicParsing="false" text="Delete" />
                      </children>
                      <VBox.margin>

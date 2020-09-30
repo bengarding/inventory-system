@@ -13,12 +13,37 @@ public class Inventory {
     }
 
     public static void addProduct(Product newProduct) {
-        /** Code here */
+        allProducts.add(newProduct);
     }
 
     public static Part lookupPart(int partId) {
-        /** Code here */
+        for (int i =0; i < allParts.size(); i++) {
+            if (allParts.get(i).getId() == partId) {
+                return allParts.get(i);
+            }
+        }
         return null;
+    }
+
+    public static int lookupPartIndex(int partID) {
+        for (int i =0; i < allParts.size(); i++) {
+            if (allParts.get(i).getId() == partID) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static boolean partExists(int partId) {
+        if (allParts.isEmpty()) {
+            return false;
+        }
+        for (int i = 0; i < allParts.size(); i++) {
+            if(allParts.get(i).getId() == partId) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Product lookupProduct(int productID) {
@@ -37,7 +62,23 @@ public class Inventory {
     }
 
     public static void updatePart(int index, Part selectedPart) {
-        /** Code here */
+        allParts.get(index).setName(selectedPart.getName());
+        allParts.get(index).setPrice(selectedPart.getPrice());
+        allParts.get(index).setMin(selectedPart.getMin());
+        allParts.get(index).setMax(selectedPart.getMax());
+        allParts.get(index).setStock(selectedPart.getStock());
+
+        if(selectedPart.getClass() == InHouse.class) {
+            ((InHouse) allParts.get(index)).setMachineId(((InHouse) selectedPart).getMachineId());
+            ((InHouse) allParts.get(index)).setPartName(((InHouse) selectedPart).getPartName());
+            ((InHouse) allParts.get(index)).setPartPrice(((InHouse) selectedPart).getPartPrice());
+            ((InHouse) allParts.get(index)).setPartStock(((InHouse) selectedPart).getPartStock());
+        } else {
+            ((Outsourced) allParts.get(index)).setCompanyName(((Outsourced) selectedPart).getCompanyName());
+            ((Outsourced) allParts.get(index)).setPartName(((Outsourced) selectedPart).getPartName());
+            ((Outsourced) allParts.get(index)).setPartPrice(((Outsourced) selectedPart).getPartPrice());
+            ((Outsourced) allParts.get(index)).setPartStock(((Outsourced) selectedPart).getPartStock());
+        }
     }
 
     public static void updateProduct(int index, Product product) {
