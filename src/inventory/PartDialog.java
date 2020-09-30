@@ -3,10 +3,8 @@ package inventory;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 public class PartDialog {
 
@@ -57,6 +55,15 @@ public class PartDialog {
 
     @FXML
     public void initialize() {
+
+        if(!Inventory.getAllParts().isEmpty()) {
+            int newId = Inventory.getAllParts().get(Inventory.getAllParts().size() - 1).getId();
+            newId++;
+            String newIdString = String.format("%0" + 4 + "d", newId);
+            idField.setText(newIdString);
+        } else {
+            idField.setText("0001");
+        }
 
         nameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -169,12 +176,40 @@ public class PartDialog {
 
     @FXML
     public void handleOkButton() {
+        if(!validateAll()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Invalid Part");
+            alert.setHeaderText(null);
+            alert.setContentText("Please make sure all of the fields are filled out correctly");
+            alert.showAndWait();
+            return;
+        }
 
+        int id = Integer.parseInt(idField.getText());
+        String name = nameField.getText();
+        int stock = Integer.parseInt(stockField.getText());
+        float price = Float.parseFloat(priceField.getText());
+        int min = Integer.parseInt(minField.getText());
+        int max = Integer.parseInt(maxField.getText());
+
+        if (inHouse.isSelected()) {
+            int machineId = Integer.parseInt(machineIdField.getText());
+            InHouse newInHouse = new InHouse(id, name, price, stock, min, max, machineId);
+            Inventory.addPart(newInHouse);
+        } else {
+            String company = companyField.getText();
+            Outsourced newOutsourced = new Outsourced(id, name, price, stock, min, max, company);
+            Inventory.addPart(newOutsourced);
+        }
+
+        Stage stage = (Stage) okButton.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     public void handleCancelButton() {
-
+        Stage stage = (Stage) okButton.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
@@ -209,7 +244,17 @@ public class PartDialog {
         }
     }
 
-    public boolean validate(int field) {
+    private boolean validateAll() {
+        boolean isValid = true;
+        for (int i = 1; i <= 7; i++) {
+            if (!validate(i)) {
+                isValid = false;
+            }
+        }
+        return isValid;
+    }
+
+    private boolean validate(int field) {
         boolean isValid = false;
 
         if (field == 1) {
@@ -247,7 +292,7 @@ public class PartDialog {
                 isValid = true;
             }
         } else if (field == 5) {
-            if(stockField.getText().isEmpty() ||
+            if (stockField.getText().isEmpty() ||
                     ((!minField.getText().isEmpty() || !maxField.getText().isEmpty()) && (Integer.parseInt(minField.getText()) > Integer.parseInt(stockField.getText()) ||
                             Integer.parseInt(maxField.getText()) < Integer.parseInt(stockField.getText())))) {
                 errorStock.setVisible(true);
@@ -257,15 +302,15 @@ public class PartDialog {
                 isValid = true;
             }
         } else if (field == 6) {
-            if(inHouse.isSelected() && machineIdField.getText().isEmpty()) {
+            if (inHouse.isSelected() && machineIdField.getText().isEmpty()) {
                 errorMachineId.setVisible(true);
                 isValid = false;
             } else {
                 errorMachineId.setVisible(false);
                 isValid = true;
             }
-        } else if (field ==7) {
-            if(outsourced.isSelected() && companyField.getText().isEmpty()) {
+        } else if (field == 7) {
+            if (outsourced.isSelected() && companyField.getText().isEmpty()) {
                 errorCompany.setVisible(true);
                 isValid = false;
             } else {
