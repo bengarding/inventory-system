@@ -3,6 +3,8 @@ package inventory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.text.NumberFormat;
+
 public class Inventory {
 
     private static ObservableList<Part> allParts = FXCollections.observableArrayList();
@@ -17,7 +19,7 @@ public class Inventory {
     }
 
     public static Part lookupPart(int partId) {
-        for (int i =0; i < allParts.size(); i++) {
+        for (int i = 0; i < allParts.size(); i++) {
             if (allParts.get(i).getId() == partId) {
                 return allParts.get(i);
             }
@@ -25,9 +27,18 @@ public class Inventory {
         return null;
     }
 
-    public static int lookupPartIndex(int partID) {
-        for (int i =0; i < allParts.size(); i++) {
-            if (allParts.get(i).getId() == partID) {
+    public static int lookupPartIndex(int partId) {
+        for (int i = 0; i < allParts.size(); i++) {
+            if (allParts.get(i).getId() == partId) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int lookupProductIndex(int partId) {
+        for (int i = 0; i < allProducts.size(); i++) {
+            if (allProducts.get(i).getId() == partId) {
                 return i;
             }
         }
@@ -39,15 +50,31 @@ public class Inventory {
             return false;
         }
         for (int i = 0; i < allParts.size(); i++) {
-            if(allParts.get(i).getId() == partId) {
+            if (allParts.get(i).getId() == partId) {
                 return true;
             }
         }
         return false;
     }
 
-    public static Product lookupProduct(int productID) {
-        /** Code here */
+    public static boolean productExists(int partId) {
+        if (allProducts.isEmpty()) {
+            return false;
+        }
+        for (int i = 0; i < allProducts.size(); i++) {
+            if (allProducts.get(i).getId() == partId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Product lookupProduct(int productId) {
+        for (int i = 0; i < allProducts.size(); i++) {
+            if (allProducts.get(i).getId() == productId) {
+                return allProducts.get(i);
+            }
+        }
         return null;
     }
 
@@ -68,7 +95,7 @@ public class Inventory {
         allParts.get(index).setMax(selectedPart.getMax());
         allParts.get(index).setStock(selectedPart.getStock());
 
-        if(selectedPart.getClass() == InHouse.class) {
+        if (selectedPart.getClass() == InHouse.class) {
             ((InHouse) allParts.get(index)).setMachineId(((InHouse) selectedPart).getMachineId());
             ((InHouse) allParts.get(index)).setPartName(((InHouse) selectedPart).getPartName());
             ((InHouse) allParts.get(index)).setPartPrice(((InHouse) selectedPart).getPartPrice());
@@ -81,18 +108,30 @@ public class Inventory {
         }
     }
 
-    public static void updateProduct(int index, Product product) {
-        /** Code here */
+    public static void updateProduct(int index, Product newProduct) {
+        System.out.println(newProduct.getPrice());
+        allProducts.get(index).setName(newProduct.getName());
+        allProducts.get(index).setPrice(newProduct.getPrice());
+        allProducts.get(index).setMin(newProduct.getMin());
+        allProducts.get(index).setMax(newProduct.getMax());
+        allProducts.get(index).setStock(newProduct.getStock());
+        allProducts.get(index).setAssociatedParts(newProduct.getAllAssociatedParts());
     }
 
     public static boolean deletePart(Part selectedPart) {
-        /** Code here */
-        return true;
+        if (allParts.contains(selectedPart)) {
+            allParts.remove(selectedPart);
+            return true;
+        }
+        return false;
     }
 
     public static boolean deleteProduct(Product selectedProduct) {
-        /** Code here */
-        return true;
+        if (allProducts.contains(selectedProduct)) {
+            allProducts.remove(selectedProduct);
+            return true;
+        }
+        return false;
     }
 
     public static ObservableList<Part> getAllParts() {
@@ -101,5 +140,10 @@ public class Inventory {
 
     public static ObservableList<Product> getAllProducts() {
         return allProducts;
+    }
+
+    public static String currencyFormatter(double price) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        return formatter.format(price);
     }
 }

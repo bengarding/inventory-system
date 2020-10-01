@@ -19,8 +19,10 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        InHouse dummy = new InHouse(12, "test", 1.25, 251, 1, 10, 5);
+        InHouse dummy = new InHouse(12, "test", 1.25, 251, 1, 100, 5);
         Inventory.addPart(dummy);
+        Product dummy2 = new Product(5, "Chicken nuggets", 5.55, 5, 2, 57);
+        Inventory.addProduct(dummy2);
         launch(args);
     }
 }

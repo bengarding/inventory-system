@@ -6,7 +6,7 @@ public class InHouse extends Part {
 
     private int machineId;
 
-    private SimpleStringProperty partID;
+    private SimpleStringProperty partId;
     private SimpleStringProperty partName;
     private SimpleStringProperty partPrice;
     private SimpleStringProperty partStock;
@@ -15,18 +15,18 @@ public class InHouse extends Part {
         super(id, name, price, stock, min, max);
         this.machineId = machineId;
 
-        this.partID = new SimpleStringProperty(Integer.toString(id));
+        this.partId = new SimpleStringProperty(Integer.toString(id));
         this.partName = new SimpleStringProperty(name);
-        this.partPrice = new SimpleStringProperty(Double.toString(price));
+        this.partPrice = new SimpleStringProperty(Inventory.currencyFormatter(price));
         this.partStock = new SimpleStringProperty(Integer.toString(stock));
     }
 
-    public String getPartID() {
-        return partID.get();
+    public String getPartId() {
+        return partId.get();
     }
 
-    public SimpleStringProperty partIDProperty() {
-        return partID;
+    public SimpleStringProperty partIdProperty() {
+        return partId;
     }
 
     public String getPartName() {
@@ -53,8 +53,8 @@ public class InHouse extends Part {
         return partStock;
     }
 
-    public void setPartID(String partID) {
-        this.partID.set(partID);
+    public void setPartId(String partId) {
+        this.partId.set(partId);
     }
 
     public void setPartName(String partName) {

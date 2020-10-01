@@ -2,18 +2,16 @@ package inventory;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-public class PartDialog {
+public class ProductDialog {
 
     @FXML
     private Label label;
-    @FXML
-    private RadioButton inHouse;
-    @FXML
-    private RadioButton outsourced;
     @FXML
     private TextField idField;
     @FXML
@@ -27,16 +25,6 @@ public class PartDialog {
     @FXML
     private TextField maxField;
     @FXML
-    private Label machineIdLabel;
-    @FXML
-    private TextField machineIdField;
-    @FXML
-    private Label companyLabel;
-    @FXML
-    private TextField companyField;
-    @FXML
-    private Label errorCompany;
-    @FXML
     private Label errorName;
     @FXML
     private Label errorStock;
@@ -47,18 +35,29 @@ public class PartDialog {
     @FXML
     private Label errorMax;
     @FXML
-    private Label errorMachineId;
-    @FXML
     private Button saveButton;
     @FXML
     private Button cancelButton;
-
+    @FXML
+    private TableView<Part> partTable;
+    @FXML
+    private TableView<Part> associatedPartTable;
+    @FXML
+    private Button addPartsButton;
+    @FXML
+    private Button removePartsButton;
+    @FXML
+    private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
 
-        if (!Inventory.getAllParts().isEmpty()) {
-            int newId = Inventory.getAllParts().get(Inventory.getAllParts().size() - 1).getId();
+        partTable.setItems(Inventory.getAllParts());
+        partTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        associatedPartTable.setItems(associatedParts);
+
+        if (!Inventory.getAllProducts().isEmpty()) {
+            int newId = Inventory.getAllProducts().get(Inventory.getAllProducts().size() - 1).getId();
             newId++;
             idField.setText(String.valueOf(newId));
         } else {
@@ -145,33 +144,6 @@ public class PartDialog {
                 }
             }
         });
-
-        machineIdField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                if (!t1.matches("\\d{0,7}?")) {
-                    machineIdField.setText(s);
-                }
-            }
-        });
-
-        machineIdField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
-                if (aBoolean) {
-                    validate(6);
-                }
-            }
-        });
-
-        companyField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
-                if (aBoolean) {
-                    validate(7);
-                }
-            }
-        });
     }
 
     @FXML
@@ -192,25 +164,13 @@ public class PartDialog {
         int min = Integer.parseInt(minField.getText());
         int max = Integer.parseInt(maxField.getText());
 
-        if (Inventory.partExists(id)) {
-            int index = Inventory.lookupPartIndex(id);
-            if (inHouse.isSelected()) {
-                int machineId = Integer.parseInt(machineIdField.getText());
-                InHouse newInHouse = new InHouse(id, name, price, stock, min, max, machineId);
-                Inventory.updatePart(index, newInHouse);
-            } else {
-                String company = companyField.getText();
-                Outsourced newOutsourced = new Outsourced(id, name, price, stock, min, max, company);
-                Inventory.updatePart(index, newOutsourced);
-            }
-        } else if (inHouse.isSelected()) {
-            int machineId = Integer.parseInt(machineIdField.getText());
-            InHouse newInHouse = new InHouse(id, name, price, stock, min, max, machineId);
-            Inventory.addPart(newInHouse);
+        Product newProduct = new Product(id, name, price, stock, min, max);
+        newProduct.setAssociatedParts(associatedParts);
+
+        if (Inventory.productExists(id)) {
+            Inventory.updateProduct(Inventory.lookupProductIndex(id), newProduct);
         } else {
-            String company = companyField.getText();
-            Outsourced newOutsourced = new Outsourced(id, name, price, stock, min, max, company);
-            Inventory.addPart(newOutsourced);
+            Inventory.addProduct(newProduct);
         }
 
         Stage stage = (Stage) saveButton.getScene().getWindow();
@@ -223,51 +183,43 @@ public class PartDialog {
         stage.close();
     }
 
-    public void modifyPart(Part part) {
-        idField.setText(String.valueOf(part.getId()));
-        nameField.setText(part.getName());
-        priceField.setText(String.valueOf(part.getPrice()));
-        minField.setText(String.valueOf(part.getMin()));
-        maxField.setText(String.valueOf(part.getMax()));
-        stockField.setText(String.valueOf(part.getStock()));
-        label.setText("Modify Part");
-        if (part.getClass() == InHouse.class) {
-            machineIdField.setText(String.valueOf(((InHouse) part).getMachineId()));
-        } else {
-            machineIdField.setVisible(false);
-            machineIdLabel.setVisible(false);
-            companyField.setVisible(true);
-            companyLabel.setVisible(true);
-            outsourced.setSelected(true);
-            companyField.setText(((Outsourced) part).getCompanyName());
+    @FXML
+    public void handleAddPartsButton() {
+        Part selectedPart = partTable.getSelectionModel().getSelectedItem();
+        if (associatedParts.contains(selectedPart)) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Part Already Associated");
+            alert.setHeaderText(null);
+            alert.setContentText("This part is already associated with this product");
+            alert.showAndWait();
+            return;
         }
-
+        associatedParts.add(selectedPart);
     }
 
     @FXML
-    public void selectRadio() {
-        if (outsourced.isSelected()) {
-            machineIdLabel.setVisible(false);
-            machineIdField.setVisible(false);
-            machineIdField.clear();
-            companyLabel.setVisible(true);
-            companyField.setVisible(true);
-            errorCompany.setVisible(false);
-            errorMachineId.setVisible(false);
-        } else {
-            machineIdLabel.setVisible(true);
-            machineIdField.setVisible(true);
-            companyLabel.setVisible(false);
-            companyField.setVisible(false);
-            companyField.clear();
-            errorMachineId.setVisible(false);
-            errorCompany.setVisible(false);
+    public void handleRemovePartsButton() {
+        Part selectedPart = associatedPartTable.getSelectionModel().getSelectedItem();
+        associatedParts.remove(selectedPart);
+    }
+
+    public void modifyProduct(Product product) {
+        idField.setText(String.valueOf(product.getId()));
+        nameField.setText(product.getName());
+        priceField.setText(String.valueOf(product.getPrice()));
+        minField.setText(String.valueOf(product.getMin()));
+        maxField.setText(String.valueOf(product.getMax()));
+        stockField.setText(String.valueOf(product.getStock()));
+        if (!product.getAllAssociatedParts().isEmpty()) {
+            associatedParts.setAll(product.getAllAssociatedParts());
         }
+        label.setText("Modify Product");
+
     }
 
     private boolean validateAll() {
         boolean isValid = true;
-        for (int i = 1; i <= 7; i++) {
+        for (int i = 1; i <= 5; i++) {
             if (!validate(i)) {
                 isValid = false;
             }
@@ -322,25 +274,7 @@ public class PartDialog {
                 errorStock.setVisible(false);
                 isValid = true;
             }
-        } else if (field == 6) {
-            if (inHouse.isSelected() && machineIdField.getText().isEmpty()) {
-                errorMachineId.setVisible(true);
-                isValid = false;
-            } else {
-                errorMachineId.setVisible(false);
-                isValid = true;
-            }
-        } else if (field == 7) {
-            if (outsourced.isSelected() && companyField.getText().isEmpty()) {
-                errorCompany.setVisible(true);
-                isValid = false;
-            } else {
-                errorCompany.setVisible(false);
-                isValid = true;
-            }
         }
-
         return isValid;
     }
-
 }
