@@ -1,4 +1,9 @@
 package inventory;
+/**
+ * The ProductDialog class controls productDialog.fxml
+ *
+ * @author Ben Garding
+ */
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -49,9 +54,12 @@ public class ProductDialog {
     @FXML
     private TextField partSearch;
 
+    /**
+     * The productDialog.fxml is initialized
+     */
     @FXML
     public void initialize() {
-        /** Creates sortedList for search bar functionality */
+        /** Creates sortedList for search bar functionality and displays it in the corresponding TableView */
         FilteredList<Part> filteredPartList = new FilteredList<>(Inventory.getAllParts());
 
         partSearch.textProperty().addListener((observableValue, s, t1) -> {
@@ -242,7 +250,9 @@ public class ProductDialog {
     }
 
     /**
-     * Runs when 'Modify' button is clicked in the main window. Loads the product data into the appropriate fields
+     * Runs when 'Modify' button is clicked in the main window. Loads the Product data into the appropriate fields
+     *
+     * @param product the Product to be modified
      */
     public void modifyProduct(Product product) {
         idField.setText(String.valueOf(product.getId()));
@@ -259,6 +269,8 @@ public class ProductDialog {
 
     /**
      * Runs validation for all fields
+     *
+     * @return true if all fields are valid and false if any field is not
      */
     private boolean validateAll() {
         boolean isValid = true;
@@ -272,6 +284,9 @@ public class ProductDialog {
 
     /**
      * Validates each field
+     *
+     * @param field the field to be validated
+     * @return true if the field is valid and false if it is not
      */
     private boolean validate(int field) {
         boolean isValid = false;

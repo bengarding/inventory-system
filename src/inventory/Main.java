@@ -19,10 +19,13 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        InHouse inHouse = new InHouse(5, "chicken nuggets", 5.5, 2, 1, 3, 5);
-        Inventory.addPart(inHouse);
-        Product product = new Product(6, "Happy meal", 6.51, 3, 2, 112);
-        Inventory.addProduct(product);
         launch(args);
     }
 }
+
+/**
+ * If I were to update this application, I would add a feature that would allow for a company to have
+ * several locations, where each location would be allowed to have it's own Parts and Products.
+ * You would then be able to select the location you wish to use, and then add/modify/delete Parts and Products
+ * from that location without affecting any of the others.
+ */

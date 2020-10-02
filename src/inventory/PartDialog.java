@@ -1,4 +1,9 @@
 package inventory;
+/**
+ * The PartDialog class controls partDialog.fxml
+ *
+ * @author Ben Garding
+ */
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -53,6 +58,9 @@ public class PartDialog {
     @FXML
     private Button cancelButton;
 
+    /**
+     * The partDialog.fxml window is initialized
+     */
     @FXML
     public void initialize() {
         if (!Inventory.getAllParts().isEmpty()) {
@@ -175,8 +183,9 @@ public class PartDialog {
         });
     }
 
-    @FXML
+
     /** Runs input validation on all of the fields, saves the part to Inventory.allParts, then closes the window */
+    @FXML
     public void handleSaveButton() {
         if (!validateAll()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -229,6 +238,7 @@ public class PartDialog {
 
     /**
      * Runs when 'Modify' button is clicked in the main window. Loads the part data into the appropriate fields
+     * @param part the Part to be modified
      */
     public void modifyPart(Part part) {
         idField.setText(String.valueOf(part.getId()));
@@ -277,6 +287,7 @@ public class PartDialog {
 
     /**
      * Runs validation for all fields
+     * @return true if all fields are valid and false if any field is not
      */
     private boolean validateAll() {
         boolean isValid = true;
@@ -290,6 +301,8 @@ public class PartDialog {
 
     /**
      * Validates each field
+     * @param field the field to be validated
+     * @return true if the field is valid and false if it is not
      */
     private boolean validate(int field) {
         boolean isValid = false;
@@ -311,6 +324,15 @@ public class PartDialog {
                 isValid = true;
             }
         } else if (field == 3) {
+            /** I encountered an error while writing this if statement.
+             * When partDialog.fxml was open, the input validation was successfully running when the text field
+             * lost it's focus, but the errorMin label was being set to visible when it shouldn't have
+             * and was also being set to not visible incorrectly.
+             * While trying to figure out why this was happening, I discovered that I had used the incorrect
+             * operator. I used '<' when it should have been '>'. I corrected this mistake, which resulted
+             * in the input validation working as intended.
+             */
+
             if (minField.getText().isEmpty() ||
                     (!maxField.getText().isEmpty() && Integer.parseInt(minField.getText()) > Integer.parseInt(maxField.getText()))) {
                 errorMin.setVisible(true);
@@ -319,6 +341,7 @@ public class PartDialog {
                 errorMin.setVisible(false);
                 isValid = true;
             }
+
         } else if (field == 4) {
             if (maxField.getText().isEmpty() ||
                     (!minField.getText().isEmpty() && Integer.parseInt(minField.getText()) > Integer.parseInt(maxField.getText()))) {
@@ -328,6 +351,7 @@ public class PartDialog {
                 errorMax.setVisible(false);
                 isValid = true;
             }
+
         } else if (field == 5) {
             if (stockField.getText().isEmpty() ||
                     ((!minField.getText().isEmpty() || !maxField.getText().isEmpty()) && (Integer.parseInt(minField.getText()) > Integer.parseInt(stockField.getText()) ||

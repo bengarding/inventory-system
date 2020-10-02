@@ -1,4 +1,9 @@
 package inventory;
+/**
+ * The Controller class controls main.fxml
+ *
+ * @author Ben Garding
+ */
 
 import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
@@ -23,9 +28,12 @@ public class Controller {
     @FXML
     private TextField productSearch;
 
+    /**
+     * The main.fxml window is initialized
+     */
     @FXML
     public void initialize() {
-        /** Creates sortedLists for search bar functionality */
+        /** Creates sortedLists for search bar functionality and displays it in the corresponding TableView*/
         FilteredList<Part> filteredPartList = new FilteredList<>(Inventory.getAllParts());
         FilteredList<Product> filteredProductList = new FilteredList<>(Inventory.getAllProducts());
 
@@ -124,7 +132,7 @@ public class Controller {
     }
 
     /**
-     * Opens a confirmation alert before deleting a part
+     * Opens a confirmation alert before deleting a part and an information alert stating if the delete was successful or not
      */
     @FXML
     public void handlePartDeleteButton() {
@@ -206,7 +214,7 @@ public class Controller {
     }
 
     /**
-     * Opens a confirmation alert before deleting product
+     * Opens a confirmation alert before deleting a product and an information alert stating if the delete was successful or not
      */
     @FXML
     public void handleProductDeleteButton() {
