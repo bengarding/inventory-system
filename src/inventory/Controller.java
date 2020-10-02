@@ -1,13 +1,12 @@
 package inventory;
 
 import javafx.application.Platform;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,15 +16,61 @@ public class Controller {
 
     @FXML
     private TableView<Part> partTable;
-
     @FXML
     private TableView<Product> productTable;
+    @FXML
+    private TextField partSearch;
+    @FXML
+    private TextField productSearch;
 
     @FXML
     public void initialize() {
-        partTable.setItems(Inventory.getAllParts());
+        FilteredList<Part> filteredPartList = new FilteredList<>(Inventory.getAllParts());
+        FilteredList<Product> filteredProductList = new FilteredList<>(Inventory.getAllProducts());
+
+        partSearch.textProperty().addListener((observableValue, s, t1) -> {
+            filteredPartList.setPredicate(part -> {
+                if(t1 == null || t1.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = t1.toLowerCase();
+                String id = String.valueOf(part.getId());
+
+                if(part.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    return true;
+                } else if (id.indexOf(t1) != -1) {
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        productSearch.textProperty().addListener((observableValue, s, t1) -> {
+            filteredProductList.setPredicate(product -> {
+                if(t1 == null || t1.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = t1.toLowerCase();
+                String id = String.valueOf(product.getId());
+
+                if(product.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    return true;
+                } else if (id.indexOf(t1) != -1) {
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        SortedList<Part> sortedPartList= new SortedList<>(filteredPartList);
+        sortedPartList.comparatorProperty().bind(partTable.comparatorProperty());
+        SortedList<Product> sortedProductList= new SortedList<>(filteredProductList);
+        sortedProductList.comparatorProperty().bind(productTable.comparatorProperty());
+
+
+        partTable.setItems(sortedPartList);
         partTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        productTable.setItems(Inventory.getAllProducts());
+        productTable.setItems(sortedProductList);
         productTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
 

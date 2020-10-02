@@ -4,6 +4,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -48,13 +50,38 @@ public class ProductDialog {
     private Button removePartsButton;
     @FXML
     private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
+    @FXML
+    private TextField partSearch;
 
     @FXML
     public void initialize() {
 
-        partTable.setItems(Inventory.getAllParts());
+        FilteredList<Part> filteredPartList = new FilteredList<>(Inventory.getAllParts());
+
+        partSearch.textProperty().addListener((observableValue, s, t1) -> {
+            filteredPartList.setPredicate(part -> {
+                if(t1 == null || t1.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = t1.toLowerCase();
+                String id = String.valueOf(part.getId());
+
+                if(part.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    return true;
+                } else if (id.indexOf(t1) != -1) {
+                    return true;
+                }
+                return false;
+            });
+        });
+
+        SortedList<Part> sortedPartList= new SortedList<>(filteredPartList);
+        sortedPartList.comparatorProperty().bind(partTable.comparatorProperty());
+
+        partTable.setItems(sortedPartList);
         partTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         associatedPartTable.setItems(associatedParts);
+        associatedPartTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         if (!Inventory.getAllProducts().isEmpty()) {
             int newId = Inventory.getAllProducts().get(Inventory.getAllProducts().size() - 1).getId();
