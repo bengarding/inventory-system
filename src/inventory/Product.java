@@ -4,8 +4,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.text.NumberFormat;
-
 public class Product {
 
     private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
@@ -35,12 +33,28 @@ public class Product {
         this.productPrice = new SimpleStringProperty(Inventory.currencyFormatter(price));
     }
 
+    /**
+     * Getters and Setters
+     */
+
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public SimpleStringProperty productIdProperty() {
+        return productId;
+    }
+
+    public SimpleStringProperty productNameProperty() {
+        return productName;
+    }
+
+    public SimpleStringProperty productStockProperty() {
+        return productStock;
+    }
+
+    public SimpleStringProperty productPriceProperty() {
+        return productPrice;
     }
 
     public String getName() {
@@ -95,20 +109,12 @@ public class Product {
         return productId.get();
     }
 
-    public SimpleStringProperty productIdProperty() {
-        return productId;
-    }
-
     public void setProductId(String productId) {
         this.productId.set(productId);
     }
 
     public String getProductName() {
         return productName.get();
-    }
-
-    public SimpleStringProperty productNameProperty() {
-        return productName;
     }
 
     public void setProductName(String productName) {
@@ -119,10 +125,6 @@ public class Product {
         return productStock.get();
     }
 
-    public SimpleStringProperty productStockProperty() {
-        return productStock;
-    }
-
     public void setProductStock(String productStock) {
         this.productStock.set(productStock);
     }
@@ -131,20 +133,19 @@ public class Product {
         return productPrice.get();
     }
 
-    public SimpleStringProperty productPriceProperty() {
-        return productPrice;
-    }
-
     public void setProductPrice(String productPrice) {
         this.productPrice.set(productPrice);
     }
 
     public void addAssociatedPart(Part part) {
-        /** Code here */
+        associatedParts.add(part);
     }
 
     public boolean deleteAssociatedPart(Part selectedPart) {
-        /** Code here */
-        return true;
+        if (associatedParts.contains(selectedPart)) {
+            associatedParts.remove(selectedPart);
+            return true;
+        }
+        return false;
     }
 }

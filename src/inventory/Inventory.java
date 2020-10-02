@@ -79,12 +79,20 @@ public class Inventory {
     }
 
     public static ObservableList<Part> lookupPart(String partName) {
-        /** Code here */
+        for (int i = 0; i < allParts.size(); i++) {
+            if (allParts.get(i).getName() == partName) {
+                return allParts;
+            }
+        }
         return null;
     }
 
     public static ObservableList<Product> lookupProduct(String productName) {
-        /** Code here */
+        for (int i = 0; i < allProducts.size(); i++) {
+            if (allProducts.get(i).getName() == productName) {
+                return allProducts;
+            }
+        }
         return null;
     }
 
@@ -109,13 +117,16 @@ public class Inventory {
     }
 
     public static void updateProduct(int index, Product newProduct) {
-        System.out.println(newProduct.getPrice());
         allProducts.get(index).setName(newProduct.getName());
         allProducts.get(index).setPrice(newProduct.getPrice());
         allProducts.get(index).setMin(newProduct.getMin());
         allProducts.get(index).setMax(newProduct.getMax());
         allProducts.get(index).setStock(newProduct.getStock());
         allProducts.get(index).setAssociatedParts(newProduct.getAllAssociatedParts());
+
+        allProducts.get(index).setProductName(newProduct.getName());
+        allProducts.get(index).setProductPrice(String.valueOf(newProduct.getPrice()));
+        allProducts.get(index).setProductStock(String.valueOf(newProduct.getStock()));
     }
 
     public static boolean deletePart(Part selectedPart) {
@@ -127,9 +138,11 @@ public class Inventory {
     }
 
     public static boolean deleteProduct(Product selectedProduct) {
-        if (allProducts.contains(selectedProduct)) {
-            allProducts.remove(selectedProduct);
-            return true;
+        if (selectedProduct.getAllAssociatedParts().isEmpty()) {
+            if (allProducts.contains(selectedProduct)) {
+                allProducts.remove(selectedProduct);
+                return true;
+            }
         }
         return false;
     }

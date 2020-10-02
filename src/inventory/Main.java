@@ -10,7 +10,7 @@ public class Main extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         primaryStage.setTitle("Inventory System");
         primaryStage.setScene(new Scene(root, 1000, 450));
@@ -19,10 +19,10 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        InHouse dummy = new InHouse(12, "test", 1.25, 251, 1, 100, 5);
-        Inventory.addPart(dummy);
-        Product dummy2 = new Product(5, "Chicken nuggets", 5.55, 5, 2, 57);
-        Inventory.addProduct(dummy2);
+        InHouse inHouse = new InHouse(5, "chicken nuggets", 5.5, 2, 1, 3, 5);
+        Inventory.addPart(inHouse);
+        Product product = new Product(6, "Happy meal", 6.51, 3, 2, 112);
+        Inventory.addProduct(product);
         launch(args);
     }
 }

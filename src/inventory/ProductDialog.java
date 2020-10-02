@@ -45,28 +45,24 @@ public class ProductDialog {
     @FXML
     private TableView<Part> associatedPartTable;
     @FXML
-    private Button addPartsButton;
-    @FXML
-    private Button removePartsButton;
-    @FXML
     private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
     @FXML
     private TextField partSearch;
 
     @FXML
     public void initialize() {
-
+        /** Creates sortedList for search bar functionality */
         FilteredList<Part> filteredPartList = new FilteredList<>(Inventory.getAllParts());
 
         partSearch.textProperty().addListener((observableValue, s, t1) -> {
             filteredPartList.setPredicate(part -> {
-                if(t1 == null || t1.isEmpty()) {
+                if (t1 == null || t1.isEmpty()) {
                     return true;
                 }
                 String lowerCaseFilter = t1.toLowerCase();
                 String id = String.valueOf(part.getId());
 
-                if(part.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                if (part.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                     return true;
                 } else if (id.indexOf(t1) != -1) {
                     return true;
@@ -75,7 +71,7 @@ public class ProductDialog {
             });
         });
 
-        SortedList<Part> sortedPartList= new SortedList<>(filteredPartList);
+        SortedList<Part> sortedPartList = new SortedList<>(filteredPartList);
         sortedPartList.comparatorProperty().bind(partTable.comparatorProperty());
 
         partTable.setItems(sortedPartList);
@@ -90,6 +86,9 @@ public class ProductDialog {
         } else {
             idField.setText("1");
         }
+
+        /** The following code adds listeners to each text field for input validation.
+         * Listeners are also added to text fields that require numerical inputs so only numbers can be entered. */
 
         nameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -173,6 +172,9 @@ public class ProductDialog {
         });
     }
 
+    /**
+     * Validates each field and saves the product to Inventory.allProducts
+     */
     @FXML
     public void handleSaveButton() {
         if (!validateAll()) {
@@ -204,12 +206,18 @@ public class ProductDialog {
         stage.close();
     }
 
+    /**
+     * Closes the window without saving
+     */
     @FXML
     public void handleCancelButton() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Takes the selected part from the ViewTable and adds it to associatedParts
+     */
     @FXML
     public void handleAddPartsButton() {
         Part selectedPart = partTable.getSelectionModel().getSelectedItem();
@@ -224,12 +232,18 @@ public class ProductDialog {
         associatedParts.add(selectedPart);
     }
 
+    /**
+     * Removes the selected part from associatedParts
+     */
     @FXML
     public void handleRemovePartsButton() {
         Part selectedPart = associatedPartTable.getSelectionModel().getSelectedItem();
         associatedParts.remove(selectedPart);
     }
 
+    /**
+     * Runs when 'Modify' button is clicked in the main window. Loads the product data into the appropriate fields
+     */
     public void modifyProduct(Product product) {
         idField.setText(String.valueOf(product.getId()));
         nameField.setText(product.getName());
@@ -241,9 +255,11 @@ public class ProductDialog {
             associatedParts.setAll(product.getAllAssociatedParts());
         }
         label.setText("Modify Product");
-
     }
 
+    /**
+     * Runs validation for all fields
+     */
     private boolean validateAll() {
         boolean isValid = true;
         for (int i = 1; i <= 5; i++) {
@@ -254,6 +270,9 @@ public class ProductDialog {
         return isValid;
     }
 
+    /**
+     * Validates each field
+     */
     private boolean validate(int field) {
         boolean isValid = false;
 

@@ -25,18 +25,19 @@ public class Controller {
 
     @FXML
     public void initialize() {
+        /** Creates sortedLists for search bar functionality */
         FilteredList<Part> filteredPartList = new FilteredList<>(Inventory.getAllParts());
         FilteredList<Product> filteredProductList = new FilteredList<>(Inventory.getAllProducts());
 
         partSearch.textProperty().addListener((observableValue, s, t1) -> {
             filteredPartList.setPredicate(part -> {
-                if(t1 == null || t1.isEmpty()) {
+                if (t1 == null || t1.isEmpty()) {
                     return true;
                 }
                 String lowerCaseFilter = t1.toLowerCase();
                 String id = String.valueOf(part.getId());
 
-                if(part.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                if (part.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                     return true;
                 } else if (id.indexOf(t1) != -1) {
                     return true;
@@ -47,13 +48,13 @@ public class Controller {
 
         productSearch.textProperty().addListener((observableValue, s, t1) -> {
             filteredProductList.setPredicate(product -> {
-                if(t1 == null || t1.isEmpty()) {
+                if (t1 == null || t1.isEmpty()) {
                     return true;
                 }
                 String lowerCaseFilter = t1.toLowerCase();
                 String id = String.valueOf(product.getId());
 
-                if(product.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                if (product.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                     return true;
                 } else if (id.indexOf(t1) != -1) {
                     return true;
@@ -62,11 +63,10 @@ public class Controller {
             });
         });
 
-        SortedList<Part> sortedPartList= new SortedList<>(filteredPartList);
+        SortedList<Part> sortedPartList = new SortedList<>(filteredPartList);
         sortedPartList.comparatorProperty().bind(partTable.comparatorProperty());
-        SortedList<Product> sortedProductList= new SortedList<>(filteredProductList);
+        SortedList<Product> sortedProductList = new SortedList<>(filteredProductList);
         sortedProductList.comparatorProperty().bind(productTable.comparatorProperty());
-
 
         partTable.setItems(sortedPartList);
         partTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -74,6 +74,9 @@ public class Controller {
         productTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
 
+    /**
+     * Opens the add part window
+     */
     @FXML
     public void handlePartAddButton() {
         try {
@@ -89,9 +92,13 @@ public class Controller {
         }
     }
 
+    /**
+     * Opens the modify part window
+     */
     @FXML
     public void handlePartModifyButton() {
         Part selectedPart = partTable.getSelectionModel().getSelectedItem();
+
         if (selectedPart == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("No Part Selected");
@@ -100,6 +107,7 @@ public class Controller {
             alert.showAndWait();
         } else {
             FXMLLoader fxmlLoader = new FXMLLoader();
+
             try {
                 fxmlLoader.setLocation(getClass().getResource("partDialog.fxml"));
                 Scene scene = new Scene(fxmlLoader.load());
@@ -115,9 +123,13 @@ public class Controller {
         }
     }
 
+    /**
+     * Opens a confirmation alert before deleting a part
+     */
     @FXML
     public void handlePartDeleteButton() {
         Part selectedPart = partTable.getSelectionModel().getSelectedItem();
+
         if (selectedPart == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("No Part Selected");
@@ -131,12 +143,23 @@ public class Controller {
             alert.setContentText("Are you sure you want to delete " + selectedPart.getName() + "?");
 
             Optional<ButtonType> result = alert.showAndWait();
-            if(result.isPresent() && result.get() == ButtonType.OK) {
-                Inventory.deletePart(selectedPart);
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                Alert confirm = new Alert(Alert.AlertType.INFORMATION);
+                confirm.setTitle("Confirmation");
+                confirm.setHeaderText(null);
+                if (Inventory.deletePart(selectedPart)) {
+                    confirm.setContentText(selectedPart.getName() + " successfully deleted");
+                } else {
+                    confirm.setContentText(selectedPart.getName() + " was not deleted");
+                }
+                confirm.showAndWait();
             }
         }
     }
 
+    /**
+     * Opens add product window
+     */
     @FXML
     public void handleProductAddButton() {
         try {
@@ -152,6 +175,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Opens modify product window
+     */
     @FXML
     public void handleProductModifyButton() {
         Product selectedProduct = productTable.getSelectionModel().getSelectedItem();
@@ -163,6 +189,7 @@ public class Controller {
             alert.showAndWait();
         } else {
             FXMLLoader fxmlLoader = new FXMLLoader();
+
             try {
                 fxmlLoader.setLocation(getClass().getResource("productDialog.fxml"));
                 Scene scene = new Scene(fxmlLoader.load());
@@ -178,9 +205,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Opens a confirmation alert before deleting product
+     */
     @FXML
     public void handleProductDeleteButton() {
         Product selectedProduct = productTable.getSelectionModel().getSelectedItem();
+        boolean confirmDelete;
+
         if (selectedProduct == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("No Product Selected");
@@ -194,12 +226,24 @@ public class Controller {
             alert.setContentText("Are you sure you want to delete " + selectedProduct.getName() + "?");
 
             Optional<ButtonType> result = alert.showAndWait();
-            if(result.isPresent() && result.get() == ButtonType.OK) {
-                Inventory.deleteProduct(selectedProduct);
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                Alert confirm = new Alert(Alert.AlertType.INFORMATION);
+                confirm.setTitle("Confirmation");
+                confirm.setHeaderText(null);
+                if (Inventory.deleteProduct(selectedProduct)) {
+                    confirm.setContentText(selectedProduct.getName() + " successfully deleted");
+                } else {
+                    confirm.setContentText(selectedProduct.getName() + " was not deleted. Please make sure there are no parts associated with it");
+                }
+                confirm.showAndWait();
             }
         }
     }
 
+    /**
+     * Exits application
+     */
     @FXML
     public void handleExit() {
         Platform.exit();

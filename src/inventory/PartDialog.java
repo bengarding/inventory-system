@@ -53,10 +53,8 @@ public class PartDialog {
     @FXML
     private Button cancelButton;
 
-
     @FXML
     public void initialize() {
-
         if (!Inventory.getAllParts().isEmpty()) {
             int newId = Inventory.getAllParts().get(Inventory.getAllParts().size() - 1).getId();
             newId++;
@@ -64,6 +62,9 @@ public class PartDialog {
         } else {
             idField.setText("1");
         }
+
+        /** The following code adds listeners to each text field for input validation.
+         * Listeners are also added to text fields that require numerical inputs so only numbers can be entered. */
 
         nameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -175,6 +176,7 @@ public class PartDialog {
     }
 
     @FXML
+    /** Runs input validation on all of the fields, saves the part to Inventory.allParts, then closes the window */
     public void handleSaveButton() {
         if (!validateAll()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -212,17 +214,22 @@ public class PartDialog {
             Outsourced newOutsourced = new Outsourced(id, name, price, stock, min, max, company);
             Inventory.addPart(newOutsourced);
         }
-
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Closes the window without saving
+     */
     @FXML
     public void handleCancelButton() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Runs when 'Modify' button is clicked in the main window. Loads the part data into the appropriate fields
+     */
     public void modifyPart(Part part) {
         idField.setText(String.valueOf(part.getId()));
         nameField.setText(part.getName());
@@ -244,6 +251,9 @@ public class PartDialog {
 
     }
 
+    /**
+     * Shows either the Machine ID or Company text fields based on which radio button is selected
+     */
     @FXML
     public void selectRadio() {
         if (outsourced.isSelected()) {
@@ -265,6 +275,9 @@ public class PartDialog {
         }
     }
 
+    /**
+     * Runs validation for all fields
+     */
     private boolean validateAll() {
         boolean isValid = true;
         for (int i = 1; i <= 7; i++) {
@@ -275,6 +288,9 @@ public class PartDialog {
         return isValid;
     }
 
+    /**
+     * Validates each field
+     */
     private boolean validate(int field) {
         boolean isValid = false;
 
@@ -339,8 +355,6 @@ public class PartDialog {
                 isValid = true;
             }
         }
-
         return isValid;
     }
-
 }

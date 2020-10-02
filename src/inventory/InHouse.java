@@ -21,6 +21,10 @@ public class InHouse extends Part {
         this.partStock = new SimpleStringProperty(Integer.toString(stock));
     }
 
+    /**
+     * Getters and Setters
+     */
+
     public String getPartId() {
         return partId.get();
     }
@@ -29,32 +33,28 @@ public class InHouse extends Part {
         return partId;
     }
 
-    public String getPartName() {
-        return partName.get();
-    }
-
     public SimpleStringProperty partNameProperty() {
         return partName;
-    }
-
-    public String getPartPrice() {
-        return partPrice.get();
     }
 
     public SimpleStringProperty partPriceProperty() {
         return partPrice;
     }
 
-    public String getPartStock() {
-        return partStock.get();
-    }
-
     public SimpleStringProperty partStockProperty() {
         return partStock;
     }
 
-    public void setPartId(String partId) {
-        this.partId.set(partId);
+    public String getPartName() {
+        return partName.get();
+    }
+
+    public String getPartPrice() {
+        return partPrice.get();
+    }
+
+    public String getPartStock() {
+        return partStock.get();
     }
 
     public void setPartName(String partName) {
