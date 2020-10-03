@@ -197,7 +197,7 @@ public class ProductDialog {
         int id = Integer.parseInt(idField.getText());
         String name = nameField.getText();
         int stock = Integer.parseInt(stockField.getText());
-        float price = Float.parseFloat(priceField.getText());
+        double price = Double.parseDouble(priceField.getText());
         int min = Integer.parseInt(minField.getText());
         int max = Integer.parseInt(maxField.getText());
 

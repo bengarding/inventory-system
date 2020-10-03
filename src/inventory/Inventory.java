@@ -200,7 +200,7 @@ public class Inventory {
         allProducts.get(index).setAssociatedParts(newProduct.getAllAssociatedParts());
 
         allProducts.get(index).setProductName(newProduct.getName());
-        allProducts.get(index).setProductPrice(String.valueOf(newProduct.getPrice()));
+        allProducts.get(index).setProductPrice(currencyFormatter(newProduct.getPrice()));
         allProducts.get(index).setProductStock(String.valueOf(newProduct.getStock()));
     }
 
