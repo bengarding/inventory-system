@@ -22,10 +22,3 @@ public class Main extends Application {
         launch(args);
     }
 }
-
-/**
- * If I were to update this application, I would add a feature that would allow for a company to have
- * several locations, where each location would be allowed to have it's own Parts and Products.
- * You would then be able to select the location you wish to use, and then add/modify/delete Parts and Products
- * from that location without affecting any of the others.
- */

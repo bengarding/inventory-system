@@ -34,21 +34,6 @@ public class Inventory {
     }
 
     /**
-     * Returns a Part found by part ID
-     *
-     * @param partId the part ID to be searched with
-     * @return the Part, if found
-     */
-    public static Part lookupPart(int partId) {
-        for (int i = 0; i < allParts.size(); i++) {
-            if (allParts.get(i).getId() == partId) {
-                return allParts.get(i);
-            }
-        }
-        return null;
-    }
-
-    /**
      * Returns the index of a Part in allParts
      *
      * @param partId the Part ID to be searched with
@@ -56,7 +41,7 @@ public class Inventory {
      */
     public static int lookupPartIndex(int partId) {
         for (int i = 0; i < allParts.size(); i++) {
-            if (allParts.get(i).getId() == partId) {
+            if (allParts.get(i).getIdInt() == partId) {
                 return i;
             }
         }
@@ -71,7 +56,7 @@ public class Inventory {
      */
     public static int lookupProductIndex(int partId) {
         for (int i = 0; i < allProducts.size(); i++) {
-            if (allProducts.get(i).getId() == partId) {
+            if (allProducts.get(i).getIdInt() == partId) {
                 return i;
             }
         }
@@ -89,7 +74,7 @@ public class Inventory {
             return false;
         }
         for (int i = 0; i < allParts.size(); i++) {
-            if (allParts.get(i).getId() == partId) {
+            if (allParts.get(i).getIdInt() == partId) {
                 return true;
             }
         }
@@ -107,56 +92,11 @@ public class Inventory {
             return false;
         }
         for (int i = 0; i < allProducts.size(); i++) {
-            if (allProducts.get(i).getId() == productId) {
+            if (allProducts.get(i).getIdInt() == productId) {
                 return true;
             }
         }
         return false;
-    }
-
-    /**
-     * Returns a Product if found by Product ID
-     *
-     * @param productId the Product ID to be searched with
-     * @return the Product if found
-     */
-    public static Product lookupProduct(int productId) {
-        for (int i = 0; i < allProducts.size(); i++) {
-            if (allProducts.get(i).getId() == productId) {
-                return allProducts.get(i);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Returns allParts if allParts contains a Part name
-     *
-     * @param partName the Part name to be searched with
-     * @return allParts if Part is found
-     */
-    public static ObservableList<Part> lookupPart(String partName) {
-        for (int i = 0; i < allParts.size(); i++) {
-            if (allParts.get(i).getName() == partName) {
-                return allParts;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Returns allProducts if allProducts contains a Product name
-     *
-     * @param productName the Product name to be searched with
-     * @return allProducts if the Product is found
-     */
-    public static ObservableList<Product> lookupProduct(String productName) {
-        for (int i = 0; i < allProducts.size(); i++) {
-            if (allProducts.get(i).getName() == productName) {
-                return allProducts;
-            }
-        }
-        return null;
     }
 
     /**
@@ -174,14 +114,8 @@ public class Inventory {
 
         if (selectedPart.getClass() == InHouse.class) {
             ((InHouse) allParts.get(index)).setMachineId(((InHouse) selectedPart).getMachineId());
-            ((InHouse) allParts.get(index)).setPartName(((InHouse) selectedPart).getPartName());
-            ((InHouse) allParts.get(index)).setPartPrice(((InHouse) selectedPart).getPartPrice());
-            ((InHouse) allParts.get(index)).setPartStock(((InHouse) selectedPart).getPartStock());
         } else {
             ((Outsourced) allParts.get(index)).setCompanyName(((Outsourced) selectedPart).getCompanyName());
-            ((Outsourced) allParts.get(index)).setPartName(((Outsourced) selectedPart).getPartName());
-            ((Outsourced) allParts.get(index)).setPartPrice(((Outsourced) selectedPart).getPartPrice());
-            ((Outsourced) allParts.get(index)).setPartStock(((Outsourced) selectedPart).getPartStock());
         }
     }
 
@@ -198,10 +132,6 @@ public class Inventory {
         allProducts.get(index).setMax(newProduct.getMax());
         allProducts.get(index).setStock(newProduct.getStock());
         allProducts.get(index).setAssociatedParts(newProduct.getAllAssociatedParts());
-
-        allProducts.get(index).setProductName(newProduct.getName());
-        allProducts.get(index).setProductPrice(currencyFormatter(newProduct.getPrice()));
-        allProducts.get(index).setProductStock(String.valueOf(newProduct.getStock()));
     }
 
     /**

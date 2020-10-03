@@ -12,107 +12,59 @@ import javafx.collections.ObservableList;
 public class Product {
 
     private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
-    private int id;
-    private String name;
-    private double price;
-    private int stock;
+    private int idInt;
     private int min;
     private int max;
 
-    private SimpleStringProperty productId;
-    private SimpleStringProperty productName;
-    private SimpleStringProperty productStock;
-    private SimpleStringProperty productPrice;
+    private SimpleStringProperty id;
+    private SimpleStringProperty name;
+    private SimpleStringProperty stock;
+    private SimpleStringProperty price;
 
-    public Product(int id, String name, double price, int stock, int min, int max) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.stock = stock;
+    public Product(int idInt, String name, double price, int stock, int min, int max) {
+        this.idInt = idInt;
         this.min = min;
         this.max = max;
 
-        this.productId = new SimpleStringProperty(String.valueOf(id));
-        this.productName = new SimpleStringProperty(name);
-        this.productStock = new SimpleStringProperty(String.valueOf(stock));
-        this.productPrice = new SimpleStringProperty(Inventory.currencyFormatter(price));
+        this.id = new SimpleStringProperty(String.valueOf(idInt));
+        this.name = new SimpleStringProperty(name);
+        this.stock = new SimpleStringProperty(String.valueOf(stock));
+        this.price = new SimpleStringProperty(Inventory.currencyFormatter(price));
     }
 
     /**
      * @return the id
      */
-    public int getId() {
-        return id;
+    public int getIdInt() {
+        return idInt;
     }
 
     /**
      * @return the SimpleStringProperty productId
      */
-    public SimpleStringProperty productIdProperty() {
-        return productId;
+    public SimpleStringProperty idProperty() {
+        return id;
     }
 
     /**
      * @return the SimpleStringProperty productName
      */
-    public SimpleStringProperty productNameProperty() {
-        return productName;
+    public SimpleStringProperty nameProperty() {
+        return name;
     }
 
     /**
      * @return the SimpleStringProperty productStock
      */
-    public SimpleStringProperty productStockProperty() {
-        return productStock;
+    public SimpleStringProperty stockProperty() {
+        return stock;
     }
 
     /**
      * @return the SimpleStringProperty productPrice
      */
-    public SimpleStringProperty productPriceProperty() {
-        return productPrice;
-    }
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the price
-     */
-    public double getPrice() {
+    public SimpleStringProperty priceProperty() {
         return price;
-    }
-
-    /**
-     * @param price the price to set
-     */
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    /**
-     * @return the stock
-     */
-    public int getStock() {
-        return stock;
-    }
-
-    /**
-     * @param stock the stock to set
-     */
-    public void setStock(int stock) {
-        this.stock = stock;
     }
 
     /**
@@ -160,50 +112,50 @@ public class Product {
     /**
      * @return the String productId
      */
-    public String getProductId() {
-        return productId.get();
+    public String getId() {
+        return id.get();
     }
 
     /**
      * @return the String productName
      */
-    public String getProductName() {
-        return productName.get();
+    public String getName() {
+        return name.get();
     }
 
     /**
-     * @param productName the productName to set
+     * @param name the productName to set
      */
-    public void setProductName(String productName) {
-        this.productName.set(productName);
+    public void setName(String name) {
+        this.name.set(name);
     }
 
     /**
      * @return the String productStock
      */
-    public String getProductStock() {
-        return productStock.get();
+    public String getStock() {
+        return stock.get();
     }
 
     /**
-     * @param productStock the productStock to set
+     * @param stock the productStock to set
      */
-    public void setProductStock(String productStock) {
-        this.productStock.set(productStock);
+    public void setStock(String stock) {
+        this.stock.set(stock);
     }
 
     /**
      * @return the String productPrice
      */
-    public String getProductPrice() {
-        return productPrice.get();
+    public String getPrice() {
+        return price.get();
     }
 
     /**
-     * @param productPrice the productPrice to set
+     * @param price the productPrice to set
      */
-    public void setProductPrice(String productPrice) {
-        this.productPrice.set(productPrice);
+    public void setPrice(String price) {
+        this.price.set(price);
     }
 
     /**

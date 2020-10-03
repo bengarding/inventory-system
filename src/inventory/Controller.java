@@ -60,7 +60,7 @@ public class Controller {
                     return true;
                 }
                 String lowerCaseFilter = t1.toLowerCase();
-                String id = String.valueOf(product.getId());
+                String id = String.valueOf(product.getIdInt());
 
                 if (product.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                     return true;
@@ -219,7 +219,6 @@ public class Controller {
     @FXML
     public void handleProductDeleteButton() {
         Product selectedProduct = productTable.getSelectionModel().getSelectedItem();
-        boolean confirmDelete;
 
         if (selectedProduct == null) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

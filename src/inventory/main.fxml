@@ -45,22 +45,22 @@
                     <columns>
                         <TableColumn text="Part ID">
                             <cellValueFactory>
-                                <PropertyValueFactory property="partId"/>
+                                <PropertyValueFactory property="id"/>
                             </cellValueFactory>
                         </TableColumn>
                         <TableColumn text="Name">
                             <cellValueFactory>
-                                <PropertyValueFactory property="partName"/>
+                                <PropertyValueFactory property="name"/>
                             </cellValueFactory>
                         </TableColumn>
                         <TableColumn text="In Stock">
                             <cellValueFactory>
-                                <PropertyValueFactory property="partStock"/>
+                                <PropertyValueFactory property="stock"/>
                             </cellValueFactory>
                         </TableColumn>
                         <TableColumn text="Price">
                             <cellValueFactory>
-                                <PropertyValueFactory property="partPrice"/>
+                                <PropertyValueFactory property="price"/>
                             </cellValueFactory>
                         </TableColumn>
                     </columns>
@@ -94,22 +94,22 @@
                     <columns>
                         <TableColumn text="Product ID">
                             <cellValueFactory>
-                                <PropertyValueFactory property="productId"/>
+                                <PropertyValueFactory property="id"/>
                             </cellValueFactory>
                         </TableColumn>
                         <TableColumn text="Name">
                             <cellValueFactory>
-                                <PropertyValueFactory property="productName"/>
+                                <PropertyValueFactory property="name"/>
                             </cellValueFactory>
                         </TableColumn>
                         <TableColumn text="In Stock">
                             <cellValueFactory>
-                                <PropertyValueFactory property="productStock"/>
+                                <PropertyValueFactory property="stock"/>
                             </cellValueFactory>
                         </TableColumn>
                         <TableColumn text="Price">
                             <cellValueFactory>
-                                <PropertyValueFactory property="productPrice"/>
+                                <PropertyValueFactory property="price"/>
                             </cellValueFactory>
                         </TableColumn>
                     </columns>

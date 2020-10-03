@@ -88,7 +88,7 @@ public class ProductDialog {
         associatedPartTable.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         if (!Inventory.getAllProducts().isEmpty()) {
-            int newId = Inventory.getAllProducts().get(Inventory.getAllProducts().size() - 1).getId();
+            int newId = Inventory.getAllProducts().get(Inventory.getAllProducts().size() - 1).getIdInt();
             newId++;
             idField.setText(String.valueOf(newId));
         } else {
@@ -255,12 +255,12 @@ public class ProductDialog {
      * @param product the Product to be modified
      */
     public void modifyProduct(Product product) {
-        idField.setText(String.valueOf(product.getId()));
+        idField.setText(product.getId());
         nameField.setText(product.getName());
-        priceField.setText(String.valueOf(product.getPrice()));
+        priceField.setText(product.getPrice().substring(1));
         minField.setText(String.valueOf(product.getMin()));
         maxField.setText(String.valueOf(product.getMax()));
-        stockField.setText(String.valueOf(product.getStock()));
+        stockField.setText(product.getStock());
         if (!product.getAllAssociatedParts().isEmpty()) {
             associatedParts.setAll(product.getAllAssociatedParts());
         }

@@ -64,7 +64,7 @@ public class PartDialog {
     @FXML
     public void initialize() {
         if (!Inventory.getAllParts().isEmpty()) {
-            int newId = Inventory.getAllParts().get(Inventory.getAllParts().size() - 1).getId();
+            int newId = Inventory.getAllParts().get(Inventory.getAllParts().size() - 1).getIdInt();
             newId++;
             idField.setText(String.valueOf(newId));
         } else {
@@ -241,12 +241,12 @@ public class PartDialog {
      * @param part the Part to be modified
      */
     public void modifyPart(Part part) {
-        idField.setText(String.valueOf(part.getId()));
+        idField.setText(part.getId());
         nameField.setText(part.getName());
-        priceField.setText(String.valueOf(part.getPrice()));
+        priceField.setText(part.getPrice().substring(1));
         minField.setText(String.valueOf(part.getMin()));
         maxField.setText(String.valueOf(part.getMax()));
-        stockField.setText(String.valueOf(part.getStock()));
+        stockField.setText(part.getStock());
         label.setText("Modify Part");
         if (part.getClass() == InHouse.class) {
             machineIdField.setText(String.valueOf(((InHouse) part).getMachineId()));
@@ -324,15 +324,6 @@ public class PartDialog {
                 isValid = true;
             }
         } else if (field == 3) {
-            /** I encountered an error while writing this if statement.
-             * When partDialog.fxml was open, the input validation was successfully running when the text field
-             * lost it's focus, but the errorMin label was being set to visible when it shouldn't have
-             * and was also being set to not visible incorrectly.
-             * While trying to figure out why this was happening, I discovered that I had used the incorrect
-             * operator. I used '<' when it should have been '>'. I corrected this mistake, which resulted
-             * in the input validation working as intended.
-             */
-
             if (minField.getText().isEmpty() ||
                     (!maxField.getText().isEmpty() && Integer.parseInt(minField.getText()) > Integer.parseInt(maxField.getText()))) {
                 errorMin.setVisible(true);
