@@ -3,4 +3,5 @@ module Inventory {
     requires javafx.fxml;
 
     opens inventory;
+
 }

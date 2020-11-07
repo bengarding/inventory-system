@@ -1,9 +1,4 @@
 package inventory;
-/**
- * The Controller class controls main.fxml
- *
- * @author Ben Garding
- */
 
 import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
@@ -17,6 +12,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * The Controller class controls main.fxml
+ *
+ * @author Ben Garding
+ */
 public class Controller {
 
     @FXML
@@ -33,43 +33,32 @@ public class Controller {
      */
     @FXML
     public void initialize() {
-        /** Creates sortedLists for search bar functionality and displays it in the corresponding TableView*/
         FilteredList<Part> filteredPartList = new FilteredList<>(Inventory.getAllParts());
         FilteredList<Product> filteredProductList = new FilteredList<>(Inventory.getAllProducts());
 
-        partSearch.textProperty().addListener((observableValue, s, t1) -> {
-            filteredPartList.setPredicate(part -> {
-                if (t1 == null || t1.isEmpty()) {
-                    return true;
-                }
-                String lowerCaseFilter = t1.toLowerCase();
-                String id = String.valueOf(part.getId());
+        partSearch.textProperty().addListener((observableValue, s, t1) -> filteredPartList.setPredicate(part -> {
+            if (t1 == null || t1.isEmpty()) {
+                return true;
+            }
+            String lowerCaseFilter = t1.toLowerCase();
+            String id = String.valueOf(part.getId());
 
-                if (part.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                    return true;
-                } else if (id.indexOf(t1) != -1) {
-                    return true;
-                }
-                return false;
-            });
-        });
+            if (part.getName().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else return id.contains(t1);
+        }));
 
-        productSearch.textProperty().addListener((observableValue, s, t1) -> {
-            filteredProductList.setPredicate(product -> {
-                if (t1 == null || t1.isEmpty()) {
-                    return true;
-                }
-                String lowerCaseFilter = t1.toLowerCase();
-                String id = String.valueOf(product.getIdInt());
+        productSearch.textProperty().addListener((observableValue, s, t1) -> filteredProductList.setPredicate(product -> {
+            if (t1 == null || t1.isEmpty()) {
+                return true;
+            }
+            String lowerCaseFilter = t1.toLowerCase();
+            String id = String.valueOf(product.getIdInt());
 
-                if (product.getName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                    return true;
-                } else if (id.indexOf(t1) != -1) {
-                    return true;
-                }
-                return false;
-            });
-        });
+            if (product.getName().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else return id.contains(t1);
+        }));
 
         SortedList<Part> sortedPartList = new SortedList<>(filteredPartList);
         sortedPartList.comparatorProperty().bind(partTable.comparatorProperty());

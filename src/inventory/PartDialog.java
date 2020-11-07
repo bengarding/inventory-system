@@ -1,16 +1,14 @@
 package inventory;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+
 /**
  * The PartDialog class controls partDialog.fxml
  *
  * @author Ben Garding
  */
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-
 public class PartDialog {
 
     @FXML
@@ -71,114 +69,75 @@ public class PartDialog {
             idField.setText("1");
         }
 
-        /** The following code adds listeners to each text field for input validation.
-         * Listeners are also added to text fields that require numerical inputs so only numbers can be entered. */
-
-        nameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
-                if (aBoolean) {
-                    validate(1);
-                }
+        nameField.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (aBoolean) {
+                validate(1);
             }
         });
 
-        priceField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                if (!t1.matches("\\d{0,7}([\\.]\\d{0,2})?")) {
-                    priceField.setText(s);
-                }
+        priceField.textProperty().addListener((observableValue, s, t1) -> {
+            if (!t1.matches("\\d{0,7}(\\d{0,2})?")) {
+                priceField.setText(s);
             }
         });
 
-        priceField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
-                if (aBoolean) {
-                    validate(2);
-                }
+        priceField.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (aBoolean) {
+                validate(2);
             }
         });
 
-        minField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                if (!t1.matches("\\d{0,7}?")) {
-                    minField.setText(s);
-                }
+        minField.textProperty().addListener((observableValue, s, t1) -> {
+            if (!t1.matches("\\d{0,7}?")) {
+                minField.setText(s);
             }
         });
 
-        minField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
-                if (aBoolean) {
-                    validate(3);
-                }
+        minField.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (aBoolean) {
+                validate(3);
             }
         });
 
-        maxField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                if (!t1.matches("\\d{0,7}?")) {
-                    maxField.setText(s);
-                }
+        maxField.textProperty().addListener((observableValue, s, t1) -> {
+            if (!t1.matches("\\d{0,7}?")) {
+                maxField.setText(s);
             }
         });
 
-        maxField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
-                if (aBoolean) {
-                    validate(4);
-                }
+        maxField.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (aBoolean) {
+                validate(4);
             }
         });
 
-        stockField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                if (!t1.matches("\\d{0,7}?")) {
-                    stockField.setText(s);
-                }
+        stockField.textProperty().addListener((observableValue, s, t1) -> {
+            if (!t1.matches("\\d{0,7}?")) {
+                stockField.setText(s);
             }
         });
 
-        stockField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
-                if (aBoolean) {
-                    validate(5);
-                }
+        stockField.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (aBoolean) {
+                validate(5);
             }
         });
 
-        machineIdField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                if (!t1.matches("\\d{0,7}?")) {
-                    machineIdField.setText(s);
-                }
+        machineIdField.textProperty().addListener((observableValue, s, t1) -> {
+            if (!t1.matches("\\d{0,7}?")) {
+                machineIdField.setText(s);
             }
         });
 
-        machineIdField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
-                if (aBoolean) {
-                    validate(6);
-                }
+        machineIdField.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (aBoolean) {
+                validate(6);
             }
         });
 
-        companyField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
-                if (aBoolean) {
-                    validate(7);
-                }
+        companyField.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (aBoolean) {
+                validate(7);
             }
         });
     }
@@ -258,7 +217,6 @@ public class PartDialog {
             outsourced.setSelected(true);
             companyField.setText(((Outsourced) part).getCompanyName());
         }
-
     }
 
     /**
